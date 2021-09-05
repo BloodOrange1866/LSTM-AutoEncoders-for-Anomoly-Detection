@@ -8,6 +8,7 @@ import seaborn as sns
 import pandas as pd
 import torch
 import matplotlib.pyplot as plt
+from sklearn.metrics import f1_score
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'USING {device}')
@@ -91,10 +92,33 @@ def plot_training_performance(data: dict):
     plt.title("LSTM Auto Encoder Reconstruction Loss")
     plt.savefig(os.path.join(os.path.dirname(os.getcwd()), 'figures', 'model.png'), dpi=400)
 
-def plot_reconstruction_loss(data: list, title: str, fname: str):
+def plot_reconstruction_loss(data: list, title: str, fname: str, xlim: list):
     df = pd.DataFrame(data, columns=['Reconstruction Loss'])
     fig = plt.figure()
-    ax = sns.distplot(df)
+    ax = sns.distplot(df, bins=50, kde=True)
+    plt.xlim(xlim[0], xlim[1])
     plt.xlabel("Reconstruction Loss Range")
     plt.title(title)
     plt.savefig(os.path.join(os.path.dirname(os.getcwd()), 'figures', fname), dpi=400)
+
+def evaluate_model(te_loss: list, anom_loss: list, threshold: float) -> pd.DataFrame():
+
+    def compute_acc(pred: list, threshold: float):
+        predictions = []
+        for p in pred:
+            if p > threshold:
+                predictions.append(1)
+            else:
+                predictions.append(0)
+        return predictions
+
+    te_pred = compute_acc(pred=te_loss, threshold=threshold)
+    te_true = [0] * len(te_pred)
+    anom_pred = compute_acc(pred=anom_loss, threshold=threshold)
+    anom_true = [1] * len(anom_pred)
+
+    te_pred.extend(anom_pred)
+    te_true.extend(anom_true)
+
+    f1 = f1_score(te_pred, te_true, average='micro')
+    return f1

@@ -58,3 +58,33 @@ This section discusses the evalaution of the chosen approach.
 The below image depicts the training and validation loss curves. The model tends to generalise around 75 epochs.
 
 <img src="/figures/model.png"> 
+
+
+### Training Reconstruction Loss
+
+The below image depicts the reconstruction loss for the training set. Based on this distribution we can set a threshold at the peak of the distribution around 0.07.
+
+<img src="/figures/train_reconstruction_loss.png"> 
+
+
+### Anomoly Reconstruction Loss
+
+The below image depicts the reconstruction loss for the anomoly set. As seen there is overlap between the threshold set and the ability to reconstruct the anomoly dataset. 
+
+
+### Performance
+
+Using both the testing and anomoly set, I am ebale to compute the [F1 metric](https://en.wikipedia.org/wiki/F-score) (micro) which takes into account FP/FN/TP/TN etc. The perfect score is 0.
+
+Using this method, F1 is 70%.
+
+
+## Discussion
+
+Given more time, one would also explore the following:
+
+1. Exhuastive Hyperparameter exploration i.e. grid search: model architecture, regularization.
+1. Feature engineering - Engineering robust features, principal component analysis, representation learning etc. 
+1. Type of approach: One could use other types of approaches such as LSTM for classification with SMOTE upsampling.
+1. CONSULT THE LITERATURE!!! There is most likely tons of useful academic literature in this space.
+

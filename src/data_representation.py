@@ -52,12 +52,16 @@ def normalise_and_standardise_data(data: dict) -> dict:
     train.loc[:,:] = norm.transform(train)
     test.loc[:,:] = norm.transform(test)
     valid.loc[:,:] = norm.transform(valid)
+
+    norm = MinMaxScaler().fit(anomoly)
     anomoly.loc[:,:] = norm.transform(anomoly)
 
     scale = StandardScaler().fit(train)
     train.loc[:,:] = scale.transform(train)
     test.loc[:,:] = scale.transform(test)
     valid.loc[:,:] = scale.transform(valid)
+
+    scale = StandardScaler().fit(anomoly)
     anomoly.loc[:,:] = scale.transform(anomoly)
 
     return {

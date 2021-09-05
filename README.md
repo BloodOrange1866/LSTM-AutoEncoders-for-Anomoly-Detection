@@ -89,7 +89,7 @@ Encoder Layers | Decoder Layers | Hidden Units | F1-Micro |
 1 | 1 | 16 | 0.61
 
 
-The most accurate method was a model with X layers in the encoder, X layers in the decoder and X hidden units.
+The most accurate method was a model with 2 layers in the encoder, 2 layers in the decoder and 16 hidden units. The network is able to predict all extreme weather events, however, due to false positives the F1 micro is 75%.
 
 ## Discussion
 

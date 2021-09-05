@@ -71,6 +71,8 @@ The below image depicts the reconstruction loss for the training set. Based on t
 
 The below image depicts the reconstruction loss for the anomoly set. As seen there is overlap between the threshold set and the ability to reconstruct the anomoly dataset. 
 
+<img src="/figures/anomoly_reconstruction_loss.png"> 
+
 
 ### Performance
 

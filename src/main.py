@@ -79,7 +79,7 @@ if __name__=="__main__":
             'values': 'eighthr.data',
         },
         'model': {
-            'train_model': True
+            'train_model': False
         }
     }
 

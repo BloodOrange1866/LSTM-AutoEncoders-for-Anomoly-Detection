@@ -45,4 +45,16 @@ This section describes the end-to-end logic within this pipeline.
 1. Train/Load an LSTM-AE.
 1. Perform the usual evaluation etc.
 
-## Evaluation Details
+### Model Details
+
+Standard parameters have been set for this model, the representation size is N=32. The model uses two LSTM layers in the encoder as well as decoder. The model could do with some hyperparameter exploration to choose the most appropriate parameters. 
+
+## Evaluation
+
+This section discusses the evalaution of the chosen approach.
+
+### Loss curves
+
+The below image depicts the training and validation loss curves. The model tends to generalise around 75 epochs.
+
+<img src="/figures/model.png"> 

@@ -73,7 +73,7 @@ The below image depicts the reconstruction loss for the anomoly set. As seen the
 
 ### Performance
 
-Using both the testing and anomoly set, I am ebale to compute the [F1 metric](https://en.wikipedia.org/wiki/F-score) (micro) which takes into account FP/FN/TP/TN etc. The perfect score is 0.
+Using both the testing and anomoly set, I am ebale to compute the [F1 metric](https://en.wikipedia.org/wiki/F-score) (micro) which takes into account FP/FN/TP/TN etc. The perfect score is 1.
 
 
 Encoder Layers | Decoder Layers | Hidden Units | F1-Micro | 

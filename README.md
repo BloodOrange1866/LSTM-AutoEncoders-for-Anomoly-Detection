@@ -51,7 +51,7 @@ Standard parameters have been set for this model, the representation size is N=3
 
 ## Evaluation
 
-This section discusses the evalaution of the chosen approach.
+This section discusses the evalaution of the chosen approach. For reference, I did not perform any hyperparameter exploration such as a [grid search](https://scikit-learn.org/stable/modules/grid_search.html). I simply tinkered with the architecture manually.3
 
 ### Loss curves
 

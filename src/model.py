@@ -28,6 +28,7 @@ class Encoder(nn.Module):
           batch_first=True
         )
 
+        # Not used too complex
         self.rnn2 = nn.LSTM(
             input_size=self.hidden_dim,
             hidden_size=embedding_dim,
@@ -37,8 +38,9 @@ class Encoder(nn.Module):
 
     def forward(self, x):
         x = x.reshape((1, self.seq_len, self.n_features))
-        x, (_, _) = self.rnn1(x)
-        x, (hidden_n, _) = self.rnn2(x)
+        #x, (_, _) = self.rnn1(x)
+        #x, (hidden_n, _) = self.rnn2(x)
+        x, (hidden_n, _) = self.rnn1(x)
         return hidden_n.reshape((self.n_features, self.embedding_dim))
 
 
@@ -53,18 +55,21 @@ class Decoder(nn.Module):
             num_layers=1,
             batch_first=True
         )
+
+        # Not used too complex
         self.rnn2 = nn.LSTM(
             input_size=input_dim,
             hidden_size=self.hidden_dim,
             num_layers=1,
             batch_first=True
         )
+
         self.output_layer = nn.Linear(self.hidden_dim, n_features)
 
     def forward(self, x):
         x = x.repeat(self.seq_len, self.n_features)
         x = x.reshape((self.n_features, self.seq_len, self.input_dim))
         x, (_, _) = self.rnn1(x)
-        x, (_, _) = self.rnn2(x)
+        #x, (_, _) = self.rnn2(x)
         x = x.reshape((self.seq_len, self.hidden_dim))
         return self.output_layer(x)

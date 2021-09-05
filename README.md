@@ -45,9 +45,6 @@ This section describes the end-to-end logic within this pipeline.
 1. Train/Load an LSTM-AE with/without dropout layer.
 1. Perform the usual evaluation etc.
 
-### Model Details
-
-As explained previously, an LSTM AutoEncoder is used for this project.
 
 ## Evaluation
 

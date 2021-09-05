@@ -11,13 +11,13 @@ In this project, an LSTM Autoencoder is trained and applied in the context of ou
 Due to the limited number of extreme weather events, anomoly detection in this context serves as the apropriate tool to use. A model can be constructed which learns from the normal weather events, and applied with the aim of recognising extreme events as anomolies. 
 
 
-The core idea behind an [autoencoder](https://en.wikipedia.org/wiki/Autoencoder) is to learn a representation can be used to reconstruct the original input sequence. In the context of our problem, detecting extreme weather events, we want to train a model to reconstruct normal weather events which ultimately leads to a learnt model able to detect ‘normality’ as this is all the model has seen. 
+The core idea behind an [autoencoder](https://en.wikipedia.org/wiki/Autoencoder) is to learn a representation that can be used to reconstruct the original input sequence. In the context of our problem, detecting extreme weather events, we want to train a model to reconstruct normal weather events which ultimately leads to a learnt model able to detect ‘normality’ as the distirbution used to train the model is different from the extreme weather events distribution.
 
 In the cases of extreme weather events, the model has not ‘seen’ these types of sequences before, and ultimately has trouble reconstructing the sequence; this leads to a high reconstruction error. The reconstruction error then acts as a metric whereby we can set some threshold, i.e. if reconstruction error is > some_threshold must be an extreme weather event.
 
-There are ways to set the threshold algorithmically, for now, I have used manual inspection (see below for further details).
+There are ways to set the threshold algorithmically, for now, I have used manual inspection. I compute the distribution of the reconstruction loss and pick a cutoff point (see below).
 
-Why an [LSTM-autoencoder](https://blog.keras.io/building-autoencoders-in-keras.html)? Due to weather events exhibiting a temporal nature, an LSTM can make use of the long-range dependencies inherit in the dataset. This approach assumes there is a temporal nature / ramp-up before an extreme weather event.
+Why an [LSTM-autoencoder](https://blog.keras.io/building-autoencoders-in-keras.html)? Due to weather events exhibiting a temporal nature, an LSTM can make use of the long-range dependencies inherit in the dataset. This approach assumes there is a temporal nature / context in predicting an event.
 
 <img src="/figures/lstm-ae.png"> 
 
@@ -43,7 +43,10 @@ This section describes the end-to-end logic within this pipeline.
 1. Normalise and standardise the dataset.
 1. Convert the data to PyTorch tensors.
 1. Train/Load an LSTM-AE with/without dropout layer.
-1. Perform the usual evaluation etc.
+1. Construct the distribution of the training reconstruction loss
+1. Pick a metric from this distribution
+1. Compute anomoly losses per sample, if loss > threshold, extreme weather event
+1. Normal evaluation etc
 
 
 ## Evaluation

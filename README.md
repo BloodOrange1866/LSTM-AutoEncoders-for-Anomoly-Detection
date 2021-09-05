@@ -47,6 +47,8 @@ This section describes the end-to-end logic within this pipeline.
 
 ### Model Details
 
+As explained previously, an LSTM AutoEncoder is used for this project.
+
 ## Evaluation
 
 This section discusses the evalaution of the chosen approach. For reference, I did not perform any hyperparameter exploration such as a [grid search](https://scikit-learn.org/stable/modules/grid_search.html). I simply tinkered with the architecture manually.

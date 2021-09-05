@@ -44,7 +44,7 @@ This section describes the end-to-end logic within this pipeline.
 1. Convert the data to PyTorch tensors.
 1. Train/Load an LSTM-AE with/without dropout layer.
 1. Construct the distribution of the training reconstruction loss
-1. Pick a metric from this distribution
+1. Pick a threshold using the training distribution.
 1. Compute anomoly losses per sample, if loss > threshold, extreme weather event
 1. Normal evaluation etc
 

@@ -22,3 +22,4 @@ Why an [LSTM-autoencoder](https://blog.keras.io/building-autoencoders-in-keras.h
 I did ponder other approaches, rather than take the non-parametric discriminative route, one could use a generative approach to model the underlying distribution such as a [variational autoencoder LSTM](https://towardsdatascience.com/time-series-generation-with-vae-lstm-5a6426365a1c) which would additionally provide certainty estimates. Besides this, a classical approach could also be to construct a distribution of normal weather events and use this as a reference when testing for extreme weather events. 
 
 [LSTM-AE](figures/lstm-ae.png?raw=true "Optional Title")
+<img src="/figures/lstm-ae.png"> 

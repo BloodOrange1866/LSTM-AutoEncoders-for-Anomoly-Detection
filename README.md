@@ -51,7 +51,7 @@ Standard parameters have been set for this model, the representation size is N=3
 
 ## Evaluation
 
-This section discusses the evalaution of the chosen approach. For reference, I did not perform any hyperparameter exploration such as a [grid search](https://scikit-learn.org/stable/modules/grid_search.html). I simply tinkered with the architecture manually.3
+This section discusses the evalaution of the chosen approach. For reference, I did not perform any hyperparameter exploration such as a [grid search](https://scikit-learn.org/stable/modules/grid_search.html). I simply tinkered with the architecture manually. I firstly started with 2 LSTM layers in the encoder and decoder, and played around with 16,32,64 and 128 hidden units. I then moved over to 1 LSTM layer for the encoder-decoder repeating the same number of hidden units. Ultimately, the architecture with X provided the most accurate model.
 
 ### Loss curves
 
@@ -78,7 +78,7 @@ The below image depicts the reconstruction loss for the anomoly set. As seen the
 
 Using both the testing and anomoly set, I am ebale to compute the [F1 metric](https://en.wikipedia.org/wiki/F-score) (micro) which takes into account FP/FN/TP/TN etc. The perfect score is 0.
 
-Using this method, F1 is 70%.
+Using this method, F1 is 75%.
 
 
 ## Discussion

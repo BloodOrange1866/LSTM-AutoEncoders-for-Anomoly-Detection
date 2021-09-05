@@ -17,7 +17,7 @@ def run_pipeline(args: dict):
         rnn_ae = m.RecurrentAutoencoder(
             seq_len=dataset['seq_len'],
             n_features=dataset['n_features'],
-            embedding_dim=16
+            embedding_dim=32
         )
 
         rnn_ae, performance = utils.train_model(

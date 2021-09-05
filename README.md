@@ -42,7 +42,7 @@ This section describes the end-to-end logic within this pipeline.
 1. Impute missing values by [Multiple Imputation by Chained Equations](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3074241/)
 1. Normalise and standardise the dataset.
 1. Convert the data to PyTorch tensors.
-1. Train/Load an LSTM-AE.
+1. Train/Load an LSTM-AE with/without dropout layer.
 1. Perform the usual evaluation etc.
 
 ### Model Details
@@ -83,10 +83,11 @@ Encoder Layers | Decoder Layers | Hidden Units | F1-Micro |
 --- | --- | --- | --- | 
 2 | 2 | 64 | 0.61  
 2 | 2 | 32 | 0.70  
-2 | 2 | 16 | 0.75
-1 | 1 | 64 | 
-1 | 1 | 32 | 
-1 | 1 | 16 |  
+2* | 2* | 16* | 0.75*
+1 | 1 | 64 | 0.58
+1 | 1 | 32 | 0.64
+1 | 1 | 16 | 0.61
+
 
 The most accurate method was a model with X layers in the encoder, X layers in the decoder and X hidden units.
 
@@ -94,7 +95,7 @@ The most accurate method was a model with X layers in the encoder, X layers in t
 
 Given more time, one would also explore the following:
 
-1. Exhuastive Hyperparameter exploration i.e. grid search: model architecture, regularization.
+1. Exhuastive Hyperparameter exploration i.e. grid search: model architecture, regularization (I added dropout, but could further experiment).
 1. Feature engineering - Engineering robust features, principal component analysis, representation learning etc. 
 1. Type of approach: One could use other types of approaches such as LSTM for classification with SMOTE upsampling.
 1. CONSULT THE LITERATURE!!! There is most likely tons of useful academic literature in this space.

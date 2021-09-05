@@ -47,8 +47,6 @@ This section describes the end-to-end logic within this pipeline.
 
 ### Model Details
 
-Standard parameters have been set for this model, the representation size is N=32. The model uses two LSTM layers in the encoder as well as decoder. The model could do with some hyperparameter exploration to choose the most appropriate parameters. 
-
 ## Evaluation
 
 This section discusses the evalaution of the chosen approach. For reference, I did not perform any hyperparameter exploration such as a [grid search](https://scikit-learn.org/stable/modules/grid_search.html). I simply tinkered with the architecture manually.

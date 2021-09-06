@@ -2,7 +2,7 @@ import os
 
 import torch
 import data_representation as data
-import model as m
+import model_new as m
 import utils
 
 
@@ -14,17 +14,18 @@ def run_pipeline(args: dict):
 
     if args['model']['train_model']:
         # implementation of a LSTM auto-encoder
-        rnn_ae = m.RecurrentAutoencoder(
+        rnn_ae = m.LSTM_AE(
             seq_len=dataset['seq_len'],
-            n_features=dataset['n_features'],
-            embedding_dim=16
+            no_features=dataset['n_features'],
+            embedding_dim=32
         )
 
         rnn_ae, performance = utils.train_model(
             model=rnn_ae,
             train_data=dataset['train'],
             val_data=dataset['valid'],
-            n_epochs=200
+            n_epochs=200,
+            batch_size=8
         )
 
         # plot and save the performance
@@ -94,9 +95,11 @@ if __name__=="__main__":
         'data': {
             'labels': 'eighthr.names',
             'values': 'eighthr.data',
+            'time_steps': 7
         },
         'model': {
-            'train_model': True
+            'train_model': True,
+            'batch_size': 5
         }
     }
 

@@ -40,7 +40,7 @@ def return_dataset(args: dict) -> dict:
     norm_standard_data = normalise_and_standardise_data(data=imputed_dataset)
 
     # convert the dataset to Pytorch tensors for training models
-    model_ready = convert_to_tensors(norm_standard_data)
+    model_ready = convert_to_tensors(data=norm_standard_data, length=args['data']['time_steps'])
 
     return model_ready
 
@@ -71,18 +71,36 @@ def normalise_and_standardise_data(data: dict) -> dict:
         'anomoly': anomoly
     }
 
-def convert_to_tensors(data: dict) -> dict:
+def convert_to_tensors(data: dict, length: int) -> dict:
 
-    def convert_using_pytorch(data: pd.DataFrame):
+    def reshape_and_split_sequences(data: list, length: int) -> list:
+        data = np.asarray(data)
+        split = [data[i:i + length] for i in range(0, len(data), length)]
+
+        reshaped_and_split = []
+        for each_timestep in split:
+            timesteps = each_timestep.shape[0]
+            n_feats = each_timestep.shape[1]
+
+            if timesteps == length:
+                each_timestep = each_timestep.T
+                each_timestep = each_timestep.reshape(1, timesteps, n_feats)
+                reshaped_and_split.append(each_timestep)
+
+        return reshaped_and_split
+
+    def convert_using_pytorch(data: pd.DataFrame, length: int):
         sequences = data.astype(np.float32).to_numpy().tolist()
-        dataset = [torch.tensor(s).unsqueeze(1).float() for s in sequences]
-        n_seq, seq_len, n_features = torch.stack(dataset).shape
+        dataset = reshape_and_split_sequences(data=sequences, length=length)
+        #dataset = [torch.tensor(s).unsqueeze(1).float() for s in dataset]
+        dataset = [torch.tensor(s).float() for s in dataset]
+        n_seq, _, seq_len, n_features = torch.stack(dataset).shape
         return dataset, seq_len, n_features
 
-    anomoly, seq_len, n_features = convert_using_pytorch(data['anomoly'])
-    train, _, _ = convert_using_pytorch(data['train'])
-    valid, _, _ = convert_using_pytorch(data['valid'])
-    test, _, _ = convert_using_pytorch(data['test'])
+    anomoly, seq_len, n_features = convert_using_pytorch(data['anomoly'], length=length)
+    train, _, _ = convert_using_pytorch(data['train'], length=length)
+    valid, _, _ = convert_using_pytorch(data['valid'], length=length)
+    test, _, _ = convert_using_pytorch(data['test'], length=length)
 
     return {
         'anomoly': anomoly,

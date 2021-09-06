@@ -33,7 +33,7 @@ def predict(model: object, dataset: object):
 
     return predictions, losses
 
-def train_model(model: object, train_data: object, val_data: object, n_epochs: int) -> object:
+def train_model(model: object, train_data: object, val_data: object, n_epochs: int, batch_size: int) -> object:
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
     criterion = nn.L1Loss(reduction='sum').to(device)
     performance = {'train': [], 'val': []}
@@ -41,30 +41,39 @@ def train_model(model: object, train_data: object, val_data: object, n_epochs: i
     optimal_model_weights = copy.deepcopy(model.state_dict())
     optimal_loss = 10000.0
 
+    model = model.cuda()
+
     for epoch in range(1, n_epochs):
         model = model.train()
 
         # train step
         train_losses = []
-        for each_seq in train_data:
+        prev_idx = 0
+        total_iter = int(np.floor(len(train_data) / batch_size))
+        for i in range(total_iter):
             optimizer.zero_grad()
-            X_true = each_seq.to(device)
-            X_pred = model(X_true)
-            loss = criterion(X_pred, X_true)
+            X_tr = torch.cat(train_data[prev_idx:prev_idx+7])
+            X_tr = X_tr.to(device)
+            X_pred = model(X_tr)
+            loss = criterion(X_pred, X_tr)
             loss.backward()
             optimizer.step()
             train_losses.append(loss.item())
+            prev_idx += 1
 
         # valid step
         val_losses = []
         model = model.eval()
+        total_iter = int(np.floor(len(val_data) / batch_size))
+        prev_idx = 0
         with torch.no_grad():
-            for each_seq in val_data:
-                X_true = each_seq.to(device)
-                X_pred = model(X_true)
-                loss = criterion(X_pred, X_true)
+            for i in range(total_iter):
+                X_tr = torch.cat(val_data[prev_idx:prev_idx + 7])
+                X_tr = X_tr.to(device)
+                X_pred = model(X_tr)
+                loss = criterion(X_pred, X_tr)
                 val_losses.append(loss.item())
-
+                prev_idx += 1
 
         performance['train'].append(np.mean(train_losses))
         performance['val'].append(np.mean(val_losses))

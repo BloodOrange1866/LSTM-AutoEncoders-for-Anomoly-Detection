@@ -7,6 +7,8 @@ from sklearn.impute import IterativeImputer
 from sklearn.model_selection import train_test_split
 import torch
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.decomposition import PCA
+
 
 META_LABELS = ['target', 'Date:']
 
@@ -27,6 +29,7 @@ def return_dataset(args: dict) -> dict:
         data=data_with_labels
     )
 
+
     # Split the dataset into train, valid, test and anomoly. Learn the imputation from the train
     # dataset and apply to the other datasets so there is no data leakage
     split_dataset = split_train_test(data=data_without_correlated_variables)
@@ -37,13 +40,34 @@ def return_dataset(args: dict) -> dict:
     )
 
     # normalise the features
-    norm_standard_data = normalise_and_standardise_data(data=imputed_dataset)
+    data = normalise_and_standardise_data(data=imputed_dataset)
+
+    # apply a PCA to reduce down to one dimension
+    if args['data']['apply_pca']:
+        data = apply_pca(
+            data=data
+        )
 
     # convert the dataset to Pytorch tensors for training models
-    model_ready = convert_to_tensors(data=norm_standard_data, length=args['data']['time_steps'])
+    model_ready = convert_to_tensors(data=data, length=args['data']['time_steps'])
 
     return model_ready
 
+
+def apply_pca(data: pd.DataFrame) -> pd.DataFrame:
+    train, test, valid, anomoly = data['train'], data['test'], data['valid'], data['anomoly']
+    pca = PCA(n_components=1)
+    train = pd.DataFrame(pca.fit_transform(train), columns=['X'])
+    test = pd.DataFrame(pca.fit_transform(test), columns=['X'])
+    valid = pd.DataFrame(pca.fit_transform(valid), columns=['X'])
+    anomoly = pd.DataFrame(pca.fit_transform(anomoly), columns=['X'])
+
+    return {
+        'train': train,
+        'test': test,
+        'valid': valid,
+        'anomoly': anomoly
+    }
 
 def normalise_and_standardise_data(data: dict) -> dict:
     train, test, valid, anomoly = data['train'], data['test'], data['valid'], data['anomoly']

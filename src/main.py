@@ -2,7 +2,7 @@ import os
 
 import torch
 import data_representation as data
-import model_new as m
+import model as m
 import utils
 
 
@@ -17,7 +17,7 @@ def run_pipeline(args: dict):
         rnn_ae = m.LSTM_AE(
             seq_len=dataset['seq_len'],
             no_features=dataset['n_features'],
-            embedding_dim=32
+            embedding_dim=8
         )
 
         rnn_ae, performance = utils.train_model(
@@ -25,7 +25,7 @@ def run_pipeline(args: dict):
             train_data=dataset['train'],
             val_data=dataset['valid'],
             n_epochs=200,
-            batch_size=8
+            batch_size=args['model']['batch_size']
         )
 
         # plot and save the performance
@@ -95,7 +95,8 @@ if __name__=="__main__":
         'data': {
             'labels': 'eighthr.names',
             'values': 'eighthr.data',
-            'time_steps': 7
+            'time_steps': 7,
+            "apply_pca": False
         },
         'model': {
             'train_model': True,

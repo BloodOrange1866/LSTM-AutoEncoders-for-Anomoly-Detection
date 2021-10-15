@@ -9,11 +9,11 @@ class RecurrentAutoencoder(nn.Module):
         self.decoder = Decoder(seq_len, embedding_dim, n_features).to(device)
 
     def forward(self, x):
-        latent_r = self.encoder(x)
-        x = self.decoder(latent_r)
+        x = self.encoder(x)
+        x = self.decoder(x)
         return x
 
-    def get_embedding(self, x)
+    def get_latent_embedding(self, x)
         return self.encoder(x)
 
 class Encoder(nn.Module):
